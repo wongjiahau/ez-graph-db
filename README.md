@@ -27,13 +27,14 @@ Query also means the pattern to be matched, and ad-hoc creation of variables is 
 Grammar:
 ```
 Query 
-  = "MATCH" Space Expr [Space ("AND" | "OR") Expr]*
+  = "MATCH" Space Expr (Space ("AND" | "OR") Expr)*
   
 Expr 
   = Variable 
   | NodeLabel 
   | Value 
   | Expr Edge Expr 
+  | Expr "{" Edge Expr ("," Expr)* "}"
   | "NOT" Expr
   
 Edge 
@@ -56,10 +57,10 @@ Value
 
 Example:
 ```
-MATCH 
-      a - Marries - b 
-  AND Marries - On - Date("2018/07/07")
-  AND b - AffairWith - c
+MATCH a-Marries {
+  -b-AffairWith-c, 
+  -On-Date("2018/07/07")
+}
 ```
 
 ```
